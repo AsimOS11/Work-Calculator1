@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Calculator - YouTube Progress Tracker</title>
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated background particles -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="header-icon">
+                <i class="fas fa-calculator"></i>
+            </div>
+            <h1>Work Calculator</h1>
+            <p class="subtitle">Track Your YouTube Learning Journey with Style</p>
+            <div class="header-decoration"></div>
+        </header>
+
+        <div class="input-section">
+            <div class="section-title">
+                <i class="fas fa-plus-circle"></i>
+                <span>Add New Entry</span>
+            </div>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="videoLink">
+                        <i class="fab fa-youtube"></i> YouTube Link
+                    </label>
+                    <input 
+                        type="text" 
+                        id="videoLink" 
+                        placeholder="https://youtube.com/watch?v=..."
+                        class="input-field"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="videoTitle">
+                        <i class="fas fa-heading"></i> Title
+                    </label>
+                    <input 
+                        type="text" 
+                        id="videoTitle" 
+                        placeholder="Enter descriptive title..."
+                        class="input-field"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="totalCount">
+                        <i class="fas fa-list-ol"></i> Total Videos/Duration
+                    </label>
+                    <input 
+                        type="text" 
+                        id="totalCount" 
+                        placeholder="50 or 2:30:45"
+                        class="input-field"
+                    >
+                    <small class="helper-text">
+                        <i class="fas fa-info-circle"></i> 
+                        For playlist: number of videos | For video: duration (HH:MM:SS)
+                    </small>
+                </div>
+            </div>
+
+            <button id="addBtn" class="add-button">
+                <i class="fas fa-plus"></i>
+                <span>Add to Tracker</span>
+            </button>
+        </div>
+
+        <div class="stats-section" id="statsSection">
+            <div class="stat-card">
+                <i class="fas fa-list"></i>
+                <div class="stat-content">
+                    <h3 id="totalEntries">0</h3>
+                    <p>Total Entries</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-chart-line"></i>
+                <div class="stat-content">
+                    <h3 id="avgProgress">0%</h3>
+                    <p>Avg Progress</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-check-circle"></i>
+                <div class="stat-content">
+                    <h3 id="completedCount">0</h3>
+                    <p>Completed</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-header">
+                <h2><i class="fas fa-table"></i> Your Progress Tracker</h2>
+            </div>
+            
+            <div class="table-wrapper">
+                <table id="workTable">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-hashtag"></i> S.No</th>
+                            <th><i class="fas fa-heading"></i> Title</th>
+                            <th><i class="fas fa-link"></i> Link</th>
+                            <th><i class="fas fa-video"></i> Total</th>
+                            <th><i class="fas fa-tasks"></i> Completed</th>
+                            <th><i class="fas fa-chart-pie"></i> % Done</th>
+                            <th><i class="fas fa-hourglass-half"></i> % Left</th>
+                            <th><i class="fas fa-cog"></i> Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Data rows will be inserted here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="emptyState" class="empty-state">
+                <div class="empty-animation">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <h3>No Entries Yet!</h3>
+                <p>Start tracking your YouTube learning progress by adding your first entry above.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content edit-modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-edit"></i> Edit Progress</h2>
+                <button class="modal-close" id="closeEditModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-description">Update your completed progress:</p>
+                <input 
+                    type="text" 
+                    id="editInput" 
+                    class="modal-input" 
+                    placeholder="Enter value (e.g., 25 or 1:30:45)"
+                >
+                <small class="modal-hint">
+                    <i class="fas fa-lightbulb"></i> 
+                    You can use : . / or - as separators for time format
+                </small>
+            </div>
+            <div class="modal-actions">
+                <button id="cancelEdit" class="btn-cancel">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button id="confirmEdit" class="btn-confirm">
+                    <i class="fas fa-check"></i> Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content delete-modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-exclamation-triangle"></i> Confirm Deletion</h2>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this entry? This action cannot be undone.</p>
+            </div>
+            <div class="modal-actions">
+                <button id="cancelDelete" class="btn-cancel">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button id="confirmDelete" class="btn-delete">
+                    <i class="fas fa-trash"></i> Yes, Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="home.js"></script>
+</body>
+</html>
